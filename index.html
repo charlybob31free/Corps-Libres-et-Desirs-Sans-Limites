@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#ffffff">
+  <title>Corps Libres et Désirs Sans Limites – Avertissement</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: #ffffff;
+      color: #1a1a1a;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 18px;
+    }
+
+    .warning-box {
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .warning-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .warning-icon svg {
+      width: 56px;
+      height: 56px;
+      display: block;
+    }
+
+    .warning-title {
+      font-size: clamp(1.35rem, 5vw, 1.7rem);
+      font-weight: normal;
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      color: #111;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 16px;
+    }
+
+    .warning-text {
+      font-size: clamp(1rem, 3.8vw, 1.15rem);
+      color: #222;
+      margin-bottom: 36px;
+      text-align: left;
+    }
+
+    .warning-text p {
+      margin-bottom: 14px;
+    }
+
+    .warning-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .enter-btn {
+      display: inline-block;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+      color: #fff;
+      background: #8b3a4a;
+      border: none;
+      border-radius: 4px;
+      padding: 14px 28px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      letter-spacing: 0.3px;
+      line-height: 1.35;
+      box-shadow: 0 4px 16px rgba(139, 58, 74, 0.3);
+    }
+
+    .enter-btn:hover,
+    .enter-btn:focus {
+      background: #7a3240;
+      box-shadow: 0 6px 20px rgba(139, 58, 74, 0.4);
+    }
+
+    .enter-btn:active {
+      transform: scale(0.98);
+    }
+
+    .note {
+      margin-top: 28px;
+      font-size: 0.85rem;
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="warning-box">
+    <!-- Triangle d'avertissement avec ! -->
+    <div class="warning-icon" aria-hidden="true">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,6 58,56 6,56" fill="#f5f0e8" stroke="#2a2a2a" stroke-width="3.5" stroke-linejoin="round"/>
+        <text x="32" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="#2a2a2a">!</text>
+      </svg>
+    </div>
+
+    <h1 class="warning-title">Avertissement</h1>
+
+    <div class="warning-text">
+      <p>Cette histoire s’adresse exclusivement à un public adulte et averti (18 ans et plus).</p>
+      <p>Elle contient des descriptions et des scènes à caractère sexuel explicite, ainsi que des propos crus et intimes.</p>
+      <p>En poursuivant, vous confirmez être majeur(e) et accepter d’être exposé(e) à ce contenu.</p>
+    </div>
+
+    <a href="cldsl_V1.html" class="enter-btn" id="enterBtn">
+      J’ai lu ces indications<br>et j’ai plus de 18 ans
+    </a>
+
+    <p class="note">Si vous n’avez pas l’âge requis ou si ce type de contenu ne vous convient pas, veuillez quitter cette page.</p>
+  </div>
+
+  <audio id="sfx-click" preload="auto" src="soft-ui-click.mp3"></audio>
+
+  <script>
+    function playSoftClick() {
+      const sfx = document.getElementById('sfx-click');
+      if (!sfx) return;
+      try {
+        sfx.pause();
+        sfx.currentTime = 0;
+        sfx.volume = 0.25;
+        sfx.play().catch(() => {});
+      } catch (e) {}
+    }
+
+    document.getElementById('enterBtn').addEventListener('click', function () {
+      playSoftClick();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#faf7f5">
+  <title>Corps Libres et Désirs Sans Limites – Vol. 1 · Éléonore</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <!-- Polices élégantes et sensuelles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #faf7f5;
+      --bg-card: #ffffff;
+      --text: #2c2420;
+      --text-soft: #6b5a52;
+      --accent: #8b3a4a;
+      --accent-soft: #c47a88;
+      --accent-light: #f3e6e9;
+      --border: #e8ddd8;
+      --shadow: rgba(139, 58, 74, 0.12);
+      --playing-bg: #fdf6f7;
+    }
+
+    /* Thème bleu (alternative) */
+    body.theme-blue {
+      --bg: #f5f7fa;
+      --bg-card: #ffffff;
+      --text: #1e2430;
+      --text-soft: #5a6575;
+      --accent: #3a5a8b;
+      --accent-soft: #7a9ac4;
+      --accent-light: #e6eef3;
+      --border: #d8e0e8;
+      --shadow: rgba(58, 90, 139, 0.12);
+      --playing-bg: #f6f9fd;
+    }
+
+    body.theme-blue .autoplay-btn.active {
+      box-shadow: 0 4px 14px rgba(58, 90, 139, 0.35);
+    }
+
+    body.theme-blue .global-pause-btn {
+      box-shadow: 0 4px 16px rgba(58, 90, 139, 0.35);
+    }
+
+    body.theme-blue .chapter.playing {
+      box-shadow: 0 4px 18px rgba(58, 90, 139, 0.15);
+    }
+
+    /* Thème vert */
+    body.theme-green {
+      --bg: #f5faf6;
+      --bg-card: #ffffff;
+      --text: #1e2a22;
+      --text-soft: #5a6b5e;
+      --accent: #3a7a52;
+      --accent-soft: #7ab48e;
+      --accent-light: #e6f3ea;
+      --border: #d8e8dc;
+      --shadow: rgba(58, 122, 82, 0.12);
+      --playing-bg: #f6fdf8;
+    }
+
+    body.theme-green .autoplay-btn.active {
+      box-shadow: 0 4px 14px rgba(58, 122, 82, 0.35);
+    }
+
+    body.theme-green .global-pause-btn {
+      box-shadow: 0 4px 16px rgba(58, 122, 82, 0.35);
+    }
+
+    body.theme-green .chapter.playing {
+      box-shadow: 0 4px 18px rgba(58, 122, 82, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', system-ui, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 16px 160px;
+    }
+
+    /* ===== Barre de progression ===== */
+    .global-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #efe8e4;
+      z-index: 200;
+    }
+
+    .global-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-soft), var(--accent));
+      transition: width 0.25s linear;
+    }
+
+    .progress-label {
+      position: fixed;
+      top: 10px;
+      left: 12px;
+      z-index: 201;
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      background: rgba(255,255,255,0.92);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      pointer-events: none;
+      font-weight: 400;
+    }
+
+    /* ===== Contrôle enchaînement ===== */
+    .autoplay-control {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 8px 10px;
+      min-width: 108px;
+      box-shadow: 0 4px 16px var(--shadow);
+    }
+
+    .autoplay-label {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      text-align: center;
+      line-height: 1.2;
+      max-width: 110px;
+    }
+
+    .autoplay-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      background: var(--bg-card);
+      color: var(--accent);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s, color 0.2s;
+      user-select: none;
+    }
+
+    .autoplay-btn:active { transform: scale(0.94); }
+
+    .autoplay-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(139, 58, 74, 0.35);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-top: 70px;
+    }
+
+    .main-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.55rem, 6vw, 2.1rem);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .sub-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.4rem, 5.2vw, 1.75rem);
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .meta {
+      font-size: 1.05rem;
+      color: var(--text-soft);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+
+    /* Boutons volumes */
+    .volumes-nav {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .vol-btn {
+      font-family: 'Outfit', system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid #e8c8d0;
+      border-radius: 24px;
+      padding: 9px 18px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .vol-btn:hover {
+      background: #f0d6dc;
+      box-shadow: 0 3px 10px var(--shadow);
+    }
+
+    .vol-btn:active {
+      transform: scale(0.97);
+    }
+
+    .vol-btn.current {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      pointer-events: none;
+    }
+
+    /* Bannière reprise */
+    .resume-banner {
+      display: none;
+      background: var(--accent-light);
+      border: 1px solid #e8c8d0;
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .resume-banner.visible { display: block; }
+
+    .resume-banner p {
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+      color: var(--text);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.1rem;
+    }
+
+    .resume-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .resume-actions button {
+      font-family: inherit;
+      font-size: 0.88rem;
+      padding: 10px 18px;
+      border-radius: 24px;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .resume-actions button.secondary {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    /* Chapitres */
+    .chapters {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .chapter {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 14px;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .chapter:active,
+    .chapter:focus-within {
+      border-color: var(--accent-soft);
+      box-shadow: 0 4px 16px var(--shadow);
+    }
+
+    .chapter.playing {
+      border-color: var(--accent);
+      background: var(--playing-bg);
+      box-shadow: 0 4px 18px rgba(139, 58, 74, 0.15);
+    }
+
+    .chapter-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .chapter-number {
+      flex-shrink: 0;
+      min-width: 44px;
+      height: 36px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .chapter.playing .chapter-number {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .chapter-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.15rem, 4.5vw, 1.35rem);
+      font-weight: 500;
+      color: var(--text);
+      flex: 1;
+      line-height: 1.35;
+      padding-top: 4px;
+    }
+
+    .chapter.playing .chapter-title {
+      color: var(--accent);
+    }
+
+    audio {
+      width: 100%;
+      height: 42px;
+      border-radius: 10px;
+      outline: none;
+      accent-color: var(--accent);
+    }
+
+    audio::-webkit-media-controls-panel {
+      background: #f9f4f2;
+    }
+
+    /* Masquer volume des lecteurs individuels */
+    audio::-webkit-media-controls-mute-button,
+    audio::-webkit-media-controls-volume-slider,
+    audio::-webkit-media-controls-volume-control-container,
+    audio::-webkit-media-controls-overflow-button {
+      display: none !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      max-width: 0 !important;
+      pointer-events: none !important;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    footer .author {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    /* ===== Barre de contrôle fixe en bas ===== */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 150;
+      background: rgba(255, 252, 250, 0.97);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+    }
+
+    .now-playing {
+      text-align: center;
+      min-height: 2.5em;
+      padding: 0 4px;
+    }
+
+    .now-playing-meta {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .now-playing-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .now-playing-title.finished {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .bottom-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+    }
+
+    .bottom-bar button {
+      font-family: inherit;
+      border: 1.5px solid var(--accent-soft);
+      background: var(--bg-card);
+      color: var(--accent);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+      user-select: none;
+    }
+
+    .bottom-bar button:active { transform: scale(0.94); }
+
+    .nav-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .global-pause-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(139, 58, 74, 0.35);
+    }
+
+    .global-pause-btn.is-paused {
+      background: var(--bg-card);
+      color: var(--accent);
+      box-shadow: none;
+    }
+
+    .volume-wrap {
+      position: relative;
+    }
+
+    .volume-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+    }
+
+    .volume-btn.muted {
+      opacity: 0.5;
+    }
+
+    .volume-panel {
+      display: none;
+      position: absolute;
+      bottom: 52px;
+      right: -4px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 10px;
+      z-index: 160;
+      box-shadow: 0 6px 20px var(--shadow);
+      width: 44px;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .volume-panel.open {
+      display: flex;
+    }
+
+    .volume-panel input[type="range"] {
+      writing-mode: vertical-lr;
+      direction: rtl;
+      width: 20px;
+      height: 90px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .volume-value {
+      font-size: 0.68rem;
+      color: var(--text-soft);
+    }
+
+    .theme-btn {
+      width: auto;
+      min-width: 42px;
+      height: 42px;
+      border-radius: 21px;
+      padding: 0 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      gap: 6px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .theme-btn .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+
+    .theme-btn .swatch.rose { background: #8b3a4a; }
+    .theme-btn .swatch.blue { background: #3a5a8b; }
+    .theme-btn .swatch.green { background: #3a7a52; }
+
+    .theme-btn .theme-label {
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 14px 12px 150px;
+      }
+
+      .autoplay-control {
+        top: 10px;
+        right: 8px;
+        padding: 7px 8px;
+        min-width: 96px;
+      }
+
+      .autoplay-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .autoplay-label { font-size: 0.65rem; }
+
+      header { padding-top: 78px; }
+
+      .main-title {
+        font-size: clamp(1.4rem, 6.5vw, 1.85rem);
+      }
+
+      .chapter { padding: 14px 12px; }
+
+      .chapter-number {
+        min-width: 42px;
+        height: 34px;
+        font-size: 0.9rem;
+      }
+
+      .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .global-pause-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+      }
+
+      .volume-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .theme-btn {
+        height: 40px;
+        min-width: 40px;
+        padding: 0 10px;
+        font-size: 0.7rem;
+      }
+
+      .theme-btn .swatch {
+        width: 12px;
+        height: 12px;
+      }
+
+      .bottom-controls {
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barre de progression globale -->
+  <div class="global-progress">
+    <div class="global-progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">— / 8</div>
+
+  <!-- Contrôle enchaînement -->
+  <div class="autoplay-control">
+    <div class="autoplay-label" id="autoplayLabel">Enchaînement automatique</div>
+    <button class="autoplay-btn active" id="autoplayBtn" onclick="toggleAutoplay()" title="Activer / désactiver l’enchaînement">
+      ▶▶
+    </button>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1 class="main-title">Corps Libres et Désirs Sans Limites</h1>
+      <p class="sub-title">Volume 1 · Éléonore</p>
+      <p class="meta">Table des matières</p>
+
+      <div class="volumes-nav">
+        <a href="cldsl_V1.html" class="vol-btn current">Volume 1</a>
+        <a href="cldsl_V2.html" class="vol-btn">Volume 2</a>
+        <a href="cldsl_V3.html" class="vol-btn">Volume 3</a>
+      </div>
+    </header>
+
+    <!-- Bannière de reprise -->
+    <div class="resume-banner" id="resumeBanner">
+      <p id="resumeText">Reprendre là où vous vous êtes arrêté·e ?</p>
+      <div class="resume-actions">
+        <button type="button" onclick="resumeFromSave()">Reprendre</button>
+        <button type="button" class="secondary" onclick="dismissResume()">Recommencer</button>
+      </div>
+    </div>
+
+    <div class="chapters">
+
+      <!-- Prologue -->
+      <article class="chapter" data-chapter="1">
+        <div class="chapter-header" onclick="togglePlay(1)">
+          <div class="chapter-number">00</div>
+          <h3 class="chapter-title">Prologue — Une relation rare</h3>
+        </div>
+        <audio id="audio-1" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/00-prologue.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+      <article class="chapter" data-chapter="2">
+        <div class="chapter-header" onclick="togglePlay(2)">
+          <div class="chapter-number">01</div>
+          <h3 class="chapter-title">Chapitre 1 — L’Invitée inattendue</h3>
+        </div>
+        <audio id="audio-2" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/01-chapitre-01.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+      <article class="chapter" data-chapter="3">
+        <div class="chapter-header" onclick="togglePlay(3)">
+          <div class="chapter-number">02</div>
+          <h3 class="chapter-title">Chapitre 2 — Matinée des Souvenirs Nus</h3>
+        </div>
+        <audio id="audio-3" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/02-chapitre-02.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+      <article class="chapter" data-chapter="4">
+        <div class="chapter-header" onclick="togglePlay(4)">
+          <div class="chapter-number">03</div>
+          <h3 class="chapter-title">Chapitre 3 — Retrouvailles et Nouveaux Désirs</h3>
+        </div>
+        <audio id="audio-4" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/03-chapitre-03.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+      <article class="chapter" data-chapter="5">
+        <div class="chapter-header" onclick="togglePlay(5)">
+          <div class="chapter-number">04</div>
+          <h3 class="chapter-title">Chapitre 4 — Nuit de Feu au Jardin des Plaisirs</h3>
+        </div>
+        <audio id="audio-5" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/04-chapitre-04.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+      <article class="chapter" data-chapter="6">
+        <div class="chapter-header" onclick="togglePlay(6)">
+          <div class="chapter-number">05</div>
+          <h3 class="chapter-title">Chapitre 5 — Nouvelles Connexions</h3>
+        </div>
+        <audio id="audio-6" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/05-chapitre-05.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+      <article class="chapter" data-chapter="7">
+        <div class="chapter-header" onclick="togglePlay(7)">
+          <div class="chapter-number">06</div>
+          <h3 class="chapter-title">Chapitre 6 — Liberté sur le Sable Brûlant</h3>
+        </div>
+        <audio id="audio-7" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/06-chapitre-06.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+      <article class="chapter" data-chapter="8">
+        <div class="chapter-header" onclick="togglePlay(8)">
+          <div class="chapter-number">07</div>
+          <h3 class="chapter-title">Chapitre 7 — L’Objectif du Désir</h3>
+        </div>
+        <audio id="audio-8" controls preload="metadata" controlsList="nodownload noplaybackrate noremoteplayback">
+          <source src="audio/07-chapitre-07.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+
+    </div>
+
+    <footer>
+      <div class="author">Créé par Charly pour Aurélie</div>
+      Lecture en ligne • Fichiers locaux
+    </footer>
+  </div>
+
+  <!-- Barre de navigation fixe en bas -->
+  <div class="bottom-bar">
+    <div class="now-playing" id="nowPlaying">
+      <div class="now-playing-meta" id="nowPlayingMeta">—</div>
+      <div class="now-playing-title" id="nowPlayingTitle">Prêt à écouter</div>
+    </div>
+    <div class="bottom-controls">
+      <button type="button" class="nav-btn" id="prevBtn" onclick="goPrev()" title="Chapitre précédent">⏮</button>
+      <button type="button" class="global-pause-btn is-paused" id="globalPauseBtn" onclick="toggleGlobalPause()" title="Lecture / Pause">▶</button>
+      <button type="button" class="nav-btn" id="nextBtn" onclick="goNext()" title="Chapitre suivant">⏭</button>
+      <button type="button" class="nav-btn" id="restartBtn" onclick="restartChapter()" title="Revenir au début du chapitre">↺</button>
+      <div class="volume-wrap">
+        <button type="button" class="volume-btn" id="volumeBtn" onclick="toggleVolumePanel()" title="Volume">🔊</button>
+        <div class="volume-panel" id="volumePanel">
+          <span class="volume-value" id="volumeValue">100%</span>
+          <input type="range" id="volumeSlider" min="0" max="100" value="100" orient="vertical" oninput="setVolume(this.value)">
+        </div>
+      </div>
+      <button type="button" class="theme-btn" id="themeBtn" onclick="toggleColorTheme()" title="Changer le thème de couleurs (rose → bleu → vert)">
+        <span class="swatch rose" id="swatchRose"></span>
+        <span class="swatch blue" id="swatchBlue"></span>
+        <span class="swatch green" id="swatchGreen"></span>
+        <span class="theme-label" id="themeLabel">Thème</span>
+      </button>
+    </div>
+  </div>
+
+  <audio id="sfx-click" preload="auto" src="soft-ui-click.mp3"></audio>
+  <audio id="sfx-toggle" preload="auto" src="soft-ui-toggle.mp3"></audio>
+
+  <script>
+    let autoplayEnabled = true;
+    const TOTAL_CHAPTERS = 8;
+    let currentPlaying = 0;
+    let preloadedNearEnd = {};
+    let currentVolume = 1;
+    let savedSpeed = 1;
+    const STORAGE_KEY = 'cldsl-v1-position';
+    const SPEED_KEY = 'cldsl-v1-speed';
+    const VOLUME_KEY = 'cldsl-v1-volume';
+    const THEME_KEY = 'cldsl-v1-theme';
+    let storyFinished = false;
+
+    const CHAPTER_TITLES = {
+      1: 'Prologue — Une relation rare',
+      2: 'L’Invitée inattendue',
+      3: 'Matinée des Souvenirs Nus',
+      4: 'Retrouvailles et Nouveaux Désirs',
+      5: 'Nuit de Feu au Jardin des Plaisirs',
+      6: 'Nouvelles Connexions',
+      7: 'Liberté sur le Sable Brûlant',
+      8: 'L’Objectif du Désir'
+    };
+
+    function playClick(relative = 1) {
+      const sfx = document.getElementById('sfx-click');
+      if (!sfx) return;
+      try {
+        sfx.pause();
+        sfx.currentTime = 0;
+        sfx.volume = Math.max(0, Math.min(1, currentVolume * relative * 0.35));
+        const p = sfx.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      } catch (e) {}
+    }
+
+    function playToggle() {
+      const sfx = document.getElementById('sfx-toggle');
+      if (!sfx) return;
+      try {
+        sfx.pause();
+        sfx.currentTime = 0;
+        sfx.volume = Math.max(0, Math.min(1, currentVolume * 0.3));
+        sfx.play().catch(() => {});
+      } catch (e) {}
+    }
+
+    function highlightChapter(num) {
+      document.querySelectorAll('.chapter').forEach(ch => {
+        ch.classList.toggle('playing', Number(ch.dataset.chapter) === num);
+      });
+      updateNowPlaying(num);
+    }
+
+    function updateNowPlaying(num) {
+      const meta = document.getElementById('nowPlayingMeta');
+      const title = document.getElementById('nowPlayingTitle');
+      if (!meta || !title) return;
+      if (storyFinished) {
+        meta.textContent = '—';
+        title.textContent = 'Fin de l’histoire';
+        title.classList.add('finished');
+        return;
+      }
+      title.classList.remove('finished');
+      if (!num || num < 1) {
+        meta.textContent = '—';
+        title.textContent = 'Prêt à écouter';
+        return;
+      }
+      if (num === 1) {
+        meta.textContent = 'Prologue';
+      } else {
+        meta.textContent = 'Chapitre ' + String(num - 1).padStart(2, '0');
+      }
+      title.textContent = CHAPTER_TITLES[num] || '';
+    }
+
+    function restartChapter() {
+      playClick();
+      const num = currentPlaying > 0 ? currentPlaying : 0;
+      if (num < 1) {
+        playChapter(1, true);
+        return;
+      }
+      playChapter(num, true);
+    }
+
+    function updateNavButtons() {
+      const prev = document.getElementById('prevBtn');
+      const next = document.getElementById('nextBtn');
+      const ref = currentPlaying || 1;
+      if (prev) prev.disabled = ref <= 1;
+      if (next) next.disabled = ref >= TOTAL_CHAPTERS;
+    }
+
+    function applyVolumeToAll(vol) {
+      currentVolume = Math.max(0, Math.min(1, vol));
+      document.querySelectorAll('audio[id^="audio-"]').forEach(a => {
+        a.volume = currentVolume;
+      });
+      const sfxClick = document.getElementById('sfx-click');
+      const sfxToggle = document.getElementById('sfx-toggle');
+      if (sfxClick) sfxClick.volume = currentVolume * 0.35;
+      if (sfxToggle) sfxToggle.volume = currentVolume * 0.3;
+
+      try { localStorage.setItem(VOLUME_KEY, String(currentVolume)); } catch (e) {}
+
+      const btn = document.getElementById('volumeBtn');
+      const val = document.getElementById('volumeValue');
+      const slider = document.getElementById('volumeSlider');
+      if (val) val.textContent = Math.round(currentVolume * 100) + '%';
+      if (slider) slider.value = Math.round(currentVolume * 100);
+      if (btn) {
+        btn.classList.toggle('muted', currentVolume === 0);
+        btn.textContent = currentVolume === 0 ? '🔇' : (currentVolume < 0.4 ? '🔉' : '🔊');
+      }
+    }
+
+    function setVolume(percent) {
+      applyVolumeToAll(Number(percent) / 100);
+    }
+
+    function toggleVolumePanel() {
+      playClick();
+      const panel = document.getElementById('volumePanel');
+      if (!panel) return;
+      panel.classList.toggle('open');
+    }
+
+    function loadSavedVolume() {
+      try {
+        const v = localStorage.getItem(VOLUME_KEY);
+        if (v !== null) {
+          const n = parseFloat(v);
+          if (!isNaN(n)) applyVolumeToAll(n);
+          else applyVolumeToAll(1);
+        } else {
+          applyVolumeToAll(1);
+        }
+      } catch (e) {
+        applyVolumeToAll(1);
+      }
+    }
+
+    function applySpeedToAll(rate) {
+      savedSpeed = rate;
+      document.querySelectorAll('audio[id^="audio-"]').forEach(a => {
+        a.playbackRate = rate;
+      });
+      try { localStorage.setItem(SPEED_KEY, String(rate)); } catch (e) {}
+      const menu = document.getElementById('speedMenuBar');
+      if (menu) {
+        menu.querySelectorAll('button').forEach(b => {
+          const s = parseFloat(b.dataset.speed);
+          b.classList.toggle('active', s === rate);
+        });
+      }
+    }
+
+    function setGlobalSpeed(rate) {
+      playClick();
+      applySpeedToAll(rate);
+      const menu = document.getElementById('speedMenuBar');
+      if (menu) menu.classList.remove('open');
+    }
+
+    function toggleSpeedMenu() { /* retiré — remplacé par le thème de couleurs */ }
+
+    function loadSavedSpeed() {
+      try {
+        const s = localStorage.getItem(SPEED_KEY);
+        if (s !== null) {
+          const n = parseFloat(s);
+          if (!isNaN(n) && n > 0) {
+            savedSpeed = n;
+            return n;
+          }
+        }
+      } catch (e) {}
+      return 1;
+    }
+
+    function updateGlobalPauseBtn() {
+      const btn = document.getElementById('globalPauseBtn');
+      if (!btn) return;
+      const audio = currentPlaying ? document.getElementById('audio-' + currentPlaying) : null;
+      const isPlaying = audio && !audio.paused;
+      if (isPlaying) {
+        btn.classList.remove('is-paused');
+        btn.textContent = '⏸';
+      } else {
+        btn.classList.add('is-paused');
+        btn.textContent = '▶';
+      }
+    }
+
+    function updateProgress() {
+      const fill = document.getElementById('progressFill');
+      const label = document.getElementById('progressLabel');
+      if (!fill || !label) return;
+
+      let pct = 0;
+      let text = '— / 8';
+
+      if (currentPlaying > 0) {
+        const audio = document.getElementById('audio-' + currentPlaying);
+        const chapterFrac = (currentPlaying - 1) / TOTAL_CHAPTERS;
+        let within = 0;
+        if (audio && audio.duration && isFinite(audio.duration) && audio.duration > 0) {
+          within = (audio.currentTime / audio.duration) / TOTAL_CHAPTERS;
+        }
+        pct = Math.min(100, (chapterFrac + within) * 100);
+        text = String(currentPlaying).padStart(2, '0') + ' / 8';
+      }
+
+      fill.style.width = pct + '%';
+      label.textContent = text;
+    }
+
+    function savePosition() {
+      if (currentPlaying < 1) return;
+      const audio = document.getElementById('audio-' + currentPlaying);
+      if (!audio) return;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          chapter: currentPlaying,
+          time: audio.currentTime || 0,
+          updated: Date.now()
+        }));
+      } catch (e) {}
+    }
+
+    function loadSavedPosition() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data || !data.chapter || data.chapter < 1 || data.chapter > TOTAL_CHAPTERS) return null;
+        return data;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function clearSavedPosition() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    }
+
+    function showResumeBanner(data) {
+      const banner = document.getElementById('resumeBanner');
+      const text = document.getElementById('resumeText');
+      if (!banner || !text) return;
+      const mins = Math.floor((data.time || 0) / 60);
+      const secs = Math.floor((data.time || 0) % 60);
+      const timeStr = mins + ':' + String(secs).padStart(2, '0');
+      const label = data.chapter === 1 ? 'Prologue' : 'Chapitre ' + String(data.chapter - 1).padStart(2, '0');
+      text.textContent = 'Reprendre ' + label + ' à ' + timeStr + ' ?';
+      banner.classList.add('visible');
+    }
+
+    function dismissResume() {
+      const banner = document.getElementById('resumeBanner');
+      if (banner) banner.classList.remove('visible');
+      clearSavedPosition();
+    }
+
+    function resumeFromSave() {
+      const data = loadSavedPosition();
+      const banner = document.getElementById('resumeBanner');
+      if (banner) banner.classList.remove('visible');
+      if (!data) return;
+
+      const audio = document.getElementById('audio-' + data.chapter);
+      if (!audio) return;
+
+      const start = () => {
+        try {
+          if (data.time > 2 && data.time < (audio.duration || Infinity) - 2) {
+            audio.currentTime = data.time;
+          }
+        } catch (e) {}
+        playChapter(data.chapter);
+        const art = document.querySelector('.chapter[data-chapter="' + data.chapter + '"]');
+        if (art) art.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+
+      if (audio.readyState >= 1) {
+        start();
+      } else {
+        audio.preload = 'auto';
+        audio.addEventListener('loadedmetadata', start, { once: true });
+        try { audio.load(); } catch (e) {}
+        setTimeout(start, 800);
+      }
+    }
+
+    function toggleAutoplay() {
+      autoplayEnabled = !autoplayEnabled;
+      playToggle();
+
+      const btn = document.getElementById('autoplayBtn');
+      const label = document.getElementById('autoplayLabel');
+
+      if (autoplayEnabled) {
+        btn.classList.add('active');
+        btn.textContent = '▶▶';
+        label.textContent = 'Enchaînement automatique';
+      } else {
+        btn.classList.remove('active');
+        btn.textContent = '⏸';
+        label.textContent = 'Chapitres isolés';
+      }
+    }
+
+    function preloadChapter(num) {
+      if (num < 1 || num > TOTAL_CHAPTERS) return;
+      const audio = document.getElementById('audio-' + num);
+      if (!audio) return;
+      if (audio.readyState < 2) {
+        audio.preload = 'auto';
+        try { audio.load(); } catch (e) {}
+      }
+    }
+
+    function preloadNextTwo(fromNum) {
+      preloadChapter(fromNum + 1);
+      preloadChapter(fromNum + 2);
+    }
+
+    function resetAllAudioPositions() {
+      document.querySelectorAll('audio[id^="audio-"]').forEach(a => {
+        try {
+          a.pause();
+          a.currentTime = 0;
+        } catch (e) {}
+      });
+      preloadedNearEnd = {};
+    }
+
+    function playChapter(num, fromStart) {
+      const audio = document.getElementById('audio-' + num);
+      if (!audio) return;
+
+      storyFinished = false;
+
+      document.querySelectorAll('audio[id^="audio-"]').forEach(a => {
+        if (a !== audio && !a.paused) a.pause();
+      });
+
+      audio.volume = currentVolume;
+      audio.playbackRate = savedSpeed;
+
+      if (fromStart) {
+        try { audio.currentTime = 0; } catch (e) {}
+      }
+
+      currentPlaying = num;
+      preloadedNearEnd[num] = false;
+      highlightChapter(num);
+      updateNavButtons();
+      updateGlobalPauseBtn();
+      updateProgress();
+
+      const tryPlay = (attempt = 1) => {
+        if (fromStart && attempt === 1) {
+          try { audio.currentTime = 0; } catch (e) {}
+        }
+        const p = audio.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            if (fromStart && audio.currentTime > 1) {
+              try { audio.currentTime = 0; } catch (e) {}
+            }
+            updateGlobalPauseBtn();
+            savePosition();
+          }).catch(() => {
+            if (attempt < 4) {
+              setTimeout(() => tryPlay(attempt + 1), 300 * attempt);
+            }
+          });
+        }
+      };
+
+      tryPlay();
+    }
+
+    function togglePlay(num) {
+      playClick();
+      const audio = document.getElementById('audio-' + num);
+      if (!audio) return;
+
+      if (audio.paused) {
+        playChapter(num);
+      } else {
+        audio.pause();
+        savePosition();
+        updateGlobalPauseBtn();
+      }
+    }
+
+    function toggleGlobalPause() {
+      playClick();
+      if (storyFinished) {
+        storyFinished = false;
+        clearSavedPosition();
+        resetAllAudioPositions();
+        playChapter(1, true);
+        const art = document.querySelector('.chapter[data-chapter="1"]');
+        if (art) art.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (currentPlaying < 1) {
+        playChapter(1);
+        return;
+      }
+      const audio = document.getElementById('audio-' + currentPlaying);
+      if (!audio) return;
+
+      if (audio.paused) {
+        playChapter(currentPlaying);
+      } else {
+        audio.pause();
+        savePosition();
+        updateGlobalPauseBtn();
+      }
+    }
+
+    function markStoryFinished() {
+      storyFinished = true;
+      currentPlaying = 0;
+      resetAllAudioPositions();
+      highlightChapter(0);
+      updateNowPlaying(0);
+      updateGlobalPauseBtn();
+      updateProgress();
+      updateNavButtons();
+      clearSavedPosition();
+      const fill = document.getElementById('progressFill');
+      if (fill) fill.style.width = '100%';
+      const label = document.getElementById('progressLabel');
+      if (label) label.textContent = '8 / 8';
+    }
+
+    function goPrev() {
+      playClick();
+      const ref = currentPlaying || 1;
+      if (ref <= 1) return;
+      playChapter(ref - 1);
+      const art = document.querySelector('.chapter[data-chapter="' + (ref - 1) + '"]');
+      if (art) art.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function goNext() {
+      playClick();
+      const ref = currentPlaying || 0;
+      if (ref >= TOTAL_CHAPTERS) return;
+      const next = ref === 0 ? 1 : ref + 1;
+      playChapter(next);
+      const art = document.querySelector('.chapter[data-chapter="' + next + '"]');
+      if (art) art.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function setupAutoplayChain() {
+      for (let i = 1; i <= TOTAL_CHAPTERS; i++) {
+        const audio = document.getElementById('audio-' + i);
+        if (!audio) continue;
+
+        audio.addEventListener('ended', function () {
+          savePosition();
+          const next = i + 1;
+          if (next > TOTAL_CHAPTERS) {
+            markStoryFinished();
+            return;
+          }
+          if (!autoplayEnabled) {
+            updateGlobalPauseBtn();
+            updateProgress();
+            return;
+          }
+          setTimeout(() => playChapter(next), 350);
+        });
+
+        audio.addEventListener('play', function () {
+          document.querySelectorAll('audio[id^="audio-"]').forEach(a => {
+            if (a !== audio && !a.paused) a.pause();
+          });
+          storyFinished = false;
+          currentPlaying = i;
+          highlightChapter(i);
+          updateNavButtons();
+          updateGlobalPauseBtn();
+
+          if (!autoplayEnabled || audio.currentTime < 0.25) {
+            playClick(0.6);
+          }
+        });
+
+        audio.addEventListener('pause', function () {
+          savePosition();
+          updateGlobalPauseBtn();
+        });
+
+        audio.addEventListener('timeupdate', function () {
+          if (currentPlaying !== i) return;
+          updateProgress();
+
+          if (Math.floor(audio.currentTime) % 5 === 0) {
+            savePosition();
+          }
+
+          if (!audio.duration || !isFinite(audio.duration)) return;
+          const remaining = audio.duration - audio.currentTime;
+          if (remaining <= 40 && remaining > 0 && !preloadedNearEnd[i]) {
+            preloadedNearEnd[i] = true;
+            preloadNextTwo(i);
+          }
+        });
+
+        audio.addEventListener('error', function () {
+          console.warn('Erreur audio chapitre ' + i, audio.error);
+        });
+      }
+    }
+
+    function preloadInitial() {
+      preloadChapter(1);
+    }
+
+    function setupGlobalMenus() {
+      document.addEventListener('click', (e) => {
+        const panel = document.getElementById('volumePanel');
+        const volWrap = document.querySelector('.volume-wrap');
+        if (panel && volWrap && !volWrap.contains(e.target)) {
+          panel.classList.remove('open');
+        }
+      });
+    }
+
+    const THEME_ORDER = ['rose', 'blue', 'green'];
+    const THEME_META = {
+      rose:  { label: 'Rose',  bg: '#faf7f5', className: null },
+      blue:  { label: 'Bleu',  bg: '#f5f7fa', className: 'theme-blue' },
+      green: { label: 'Vert',  bg: '#f5faf6', className: 'theme-green' }
+    };
+
+    function getCurrentTheme() {
+      if (document.body.classList.contains('theme-blue')) return 'blue';
+      if (document.body.classList.contains('theme-green')) return 'green';
+      return 'rose';
+    }
+
+    function applyTheme(name) {
+      document.body.classList.remove('theme-blue', 'theme-green');
+      const info = THEME_META[name] || THEME_META.rose;
+      if (info.className) document.body.classList.add(info.className);
+
+      const label = document.getElementById('themeLabel');
+      const btn = document.getElementById('themeBtn');
+      if (label) label.textContent = info.label;
+      if (btn) {
+        const next = THEME_ORDER[(THEME_ORDER.indexOf(name) + 1) % THEME_ORDER.length];
+        const nextLabel = THEME_META[next].label.toLowerCase();
+        btn.title = 'Thème actuel : ' + info.label.toLowerCase() + ' — cliquer pour passer au ' + nextLabel;
+      }
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = info.bg;
+
+      try {
+        localStorage.setItem(THEME_KEY, name);
+      } catch (e) {}
+    }
+
+    function toggleColorTheme() {
+      playClick();
+      const current = getCurrentTheme();
+      const idx = THEME_ORDER.indexOf(current);
+      const next = THEME_ORDER[(idx + 1) % THEME_ORDER.length];
+      applyTheme(next);
+    }
+
+    function loadTheme() {
+      try {
+        const t = localStorage.getItem(THEME_KEY);
+        if (t === 'blue' || t === 'green' || t === 'rose') {
+          applyTheme(t);
+        } else {
+          applyTheme('rose');
+        }
+      } catch (e) {
+        applyTheme('rose');
+      }
+    }
+
+    // Init
+    savedSpeed = loadSavedSpeed();
+    setupAutoplayChain();
+    setupGlobalMenus();
+    applySpeedToAll(savedSpeed);
+    loadSavedVolume();
+    loadTheme();
+    preloadInitial();
+    updateNavButtons();
+    updateGlobalPauseBtn();
+    updateProgress();
+    updateNowPlaying(0);
+
+    const saved = loadSavedPosition();
+    if (saved && (saved.time > 5 || saved.chapter > 1)) {
+      showResumeBanner(saved);
+      preloadChapter(saved.chapter);
+      if (saved.chapter < TOTAL_CHAPTERS) preloadChapter(saved.chapter + 1);
+    }
+
+    window.addEventListener('pagehide', savePosition);
+    window.addEventListener('beforeunload', savePosition);
+
+    document.addEventListener('dblclick', function(e) {
+      e.preventDefault();
+    }, { passive: false });
+  </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#faf7f5">
+  <title>Corps Libres et Désirs Sans Limites – Vol. 3</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #faf7f5;
+      --text: #2c2420;
+      --text-soft: #6b5a52;
+      --accent: #8b3a4a;
+      --accent-soft: #c47a88;
+      --accent-light: #f3e6e9;
+      --border: #e8ddd8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', system-ui, sans-serif;
+      min-height: 100vh;
+      line-height: 1.55;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 18px;
+    }
+
+    .box {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 40px 28px;
+      box-shadow: 0 8px 32px rgba(139, 58, 74, 0.08);
+    }
+
+    .main-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.5rem, 5.5vw, 1.9rem);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+
+    .sub-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.15rem, 4vw, 1.35rem);
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .message {
+      font-size: 1.05rem;
+      color: var(--text-soft);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .message strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .back-btn {
+      display: inline-block;
+      font-family: 'Outfit', system-ui, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 28px;
+      padding: 14px 28px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 16px rgba(139, 58, 74, 0.3);
+    }
+
+    .back-btn:hover {
+      background: #7a3240;
+      box-shadow: 0 6px 20px rgba(139, 58, 74, 0.4);
+    }
+
+    .back-btn:active {
+      transform: scale(0.97);
+    }
+
+    .note {
+      margin-top: 28px;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1 class="main-title">Corps Libres et Désirs Sans Limites</h1>
+    <p class="sub-title">Volume 3</p>
+
+    <p class="message">
+      Cette histoire est <strong>en cours d’écriture</strong>.<br>
+      Elle sera disponible ici très bientôt.
+    </p>
+
+    <a href="cldsl_V1.html" class="back-btn">Retour au Volume 1</a>
+
+    <p class="note">En attendant, retrouvez le Volume 1 · Éléonore</p>
+  </div>
+
+  <audio id="sfx-click" preload="auto" src="soft-ui-click.mp3"></audio>
+
+  <script>
+    document.querySelector('.back-btn').addEventListener('click', function () {
+      const sfx = document.getElementById('sfx-click');
+      if (sfx) {
+        try {
+          sfx.volume = 0.25;
+          sfx.currentTime = 0;
+          sfx.play().catch(() => {});
+        } catch (e) {}
+      }
+    });
+  </script>
+</body>
+</html>
