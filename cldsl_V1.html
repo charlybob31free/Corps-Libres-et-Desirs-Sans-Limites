@@ -97,7 +97,7 @@
     .container {
       max-width: 680px;
       margin: 0 auto;
-      padding: 110px 16px 160px;
+      padding: 140px 16px 160px;
     }
 
     /* ===== Barre de progression (dans header fixe) ===== */
@@ -133,7 +133,7 @@
     .header-inner {
       max-width: 680px;
       margin: 0 auto;
-      padding: 12px 16px 10px;
+      padding: 12px 16px 12px;
       text-align: center;
       position: relative;
     }
@@ -247,30 +247,30 @@
     /* Boutons volumes */
     .volumes-nav {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 8px;
+      margin-top: 10px;
+      margin-bottom: 2px;
     }
 
     .vol-btn {
       font-family: 'Outfit', system-ui, sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--accent);
       background: var(--accent-light);
-      border: 1px solid #e8c8d0;
-      border-radius: 24px;
-      padding: 9px 18px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
       cursor: pointer;
       text-decoration: none;
       transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
     }
 
     .vol-btn:hover {
-      background: #f0d6dc;
-      box-shadow: 0 3px 10px var(--shadow);
+      box-shadow: 0 2px 8px var(--shadow);
     }
 
     .vol-btn:active {
@@ -639,7 +639,17 @@
 
     @media (max-width: 480px) {
       .container {
-        padding: 100px 12px 150px;
+        padding: 130px 12px 150px;
+      }
+
+      .volumes-nav {
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .vol-btn {
+        font-size: 0.7rem;
+        padding: 5px 11px;
       }
 
       .autoplay-control {
@@ -719,6 +729,11 @@
       <h1 class="main-title">Corps Libres et Désirs Sans Limites</h1>
       <p class="sub-title">Volume 1 · Éléonore</p>
       <p class="meta">Table des matières</p>
+      <div class="volumes-nav">
+        <a href="cldsl_V1.html" class="vol-btn current">Volume 1</a>
+        <a href="cldsl_V2.html" class="vol-btn">Volume 2</a>
+        <a href="cldsl_V3.html" class="vol-btn">Volume 3</a>
+      </div>
     </div>
   </header>
 
@@ -731,11 +746,6 @@
   </div>
 
   <div class="container">
-    <div class="volumes-nav">
-      <a href="cldsl_V1.html" class="vol-btn current">Volume 1</a>
-      <a href="cldsl_V2.html" class="vol-btn">Volume 2</a>
-      <a href="cldsl_V3.html" class="vol-btn">Volume 3</a>
-    </div>
 
     <!-- Bannière de reprise -->
     <div class="resume-banner" id="resumeBanner">
