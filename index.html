@@ -15,22 +15,31 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
+    html {
+      height: 100%;
+    }
+
+    body {
       background: #ffffff;
       color: #1a1a1a;
       font-family: Georgia, 'Times New Roman', Times, serif;
-      min-height: 100vh;
+      min-height: 100%;
+      min-height: 100dvh;
       line-height: 1.6;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      padding: 24px 18px;
+      padding: 24px 18px calc(28px + env(safe-area-inset-bottom, 0px));
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .warning-box {
       max-width: 560px;
       width: 100%;
       text-align: center;
+      margin: auto 0;
+      padding-bottom: 4px;
     }
 
     .warning-icon {
@@ -62,7 +71,7 @@
     .warning-text {
       font-size: clamp(1rem, 3.8vw, 1.15rem);
       color: #222;
-      margin-bottom: 36px;
+      margin-bottom: 28px;
       text-align: left;
     }
 
@@ -72,6 +81,13 @@
 
     .warning-text p:last-child {
       margin-bottom: 0;
+    }
+
+    .click-hint {
+      font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+      color: #8b3a4a;
+      margin-bottom: 12px;
+      letter-spacing: 0.2px;
     }
 
     .enter-btn {
@@ -102,10 +118,48 @@
     }
 
     .note {
-      margin-top: 28px;
+      margin-top: 24px;
+      margin-bottom: 8px;
       font-size: 0.85rem;
       color: #666;
       font-style: italic;
+      line-height: 1.45;
+      padding: 0 4px;
+    }
+
+    @media (max-height: 700px) {
+      body {
+        padding-top: 16px;
+        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .warning-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 12px;
+      }
+
+      .warning-icon svg {
+        width: 48px;
+        height: 48px;
+      }
+
+      .warning-title {
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+      }
+
+      .warning-text {
+        margin-bottom: 20px;
+      }
+
+      .warning-text p {
+        margin-bottom: 10px;
+      }
+
+      .note {
+        margin-top: 18px;
+      }
     }
   </style>
 </head>
@@ -127,6 +181,8 @@
       <p>Elle contient des descriptions et des scènes à caractère sexuel explicite, ainsi que des propos crus et intimes.</p>
       <p>En poursuivant, vous confirmez être majeur(e) et accepter d’être exposé(e) à ce contenu.</p>
     </div>
+
+    <p class="click-hint">Cliquer ici</p>
 
     <a href="cldsl_V1.html" class="enter-btn" id="enterBtn">
       J’ai lu ces indications<br>et j’ai plus de 18 ans
